@@ -32,6 +32,8 @@ app.get('/api/products/productinfo', async (req,res)=>{
     }
    
 })
+
+
 //show user cart
 app.get("/api/usercart", async (req,res )=> {
     try{
@@ -64,6 +66,47 @@ app.get("/api/usercart", async (req,res )=> {
       
         console.log(err.message)
     }
+})
+
+//remove product
+app.delete("/api/remove", async (req,res )=> {
+    try{
+        const cart = req.query
+        console.log(req.query)
+        await pool.query(`delete from "USER_CART" where "PRODUCT_ID" = '${cart.PROD_ID}' and "USER_ID" = '${cart.ID}';`)
+        console.log("deleted")
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+//subtractcart
+
+app.put("/api/subtractcart",async(req,res)=>{
+    try{
+        const userdata = req.body.params
+        console.log(req.body.params)
+        await pool.query(`UPDATE "USER_CART" SET "QUANTITY" = '${userdata.QUANTITY}' WHERE "USER_ID" = '${userdata.ID}' AND "PRODUCT_ID" = '${userdata.PROD_ID}';`)
+        console.log("minus")
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
+
+app.put("/api/addcart",async(req,res)=>{
+    try{    
+        const userdata = req.body.params
+        console.log(req.body.params)
+        await pool.query(`UPDATE "USER_CART" SET "QUANTITY" = '${userdata.QUANTITY}' WHERE "USER_ID" = '${userdata.ID}' AND "PRODUCT_ID" = '${userdata.PROD_ID}';`)
+        console.log("added")
+    }
+    catch(err){
+        console.log(err)
+    }
+
 })
 
 //add to cart
